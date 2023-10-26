@@ -1,0 +1,102 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+
+
+/**
+ * This file contains an example of an iterative (Non-Linear) "OpMode".
+ * An OpMode is a 'program' that runs in either the autonomous or the teleop period of an FTC match.
+ * The names of OpModes appear on the menu of the FTC Driver Station.
+ * When a selection is made from the menu, the corresponding OpMode
+ * class is instantiated on the Robot Controller and executed.
+ * <p>
+ * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
+ * It includes all the skeletal structure that all iterative OpModes contain.
+ * <p>
+ * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
+ */
+
+@TeleOp(name = "Grrahh", group = "Iterative Op-mode")
+
+public class Grrahhrobotcode extends OpMode {
+    public static DcMotor frontLeft;
+    public static DcMotor frontRight;
+    public static DcMotor backLeft;
+    public static DcMotor backRight;
+
+    //public static Servo arm;
+    public static Servo clawleft;
+    public static Servo clawright;
+    public void init() {
+    }
+
+    public void loop() {
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
+        //arm = hardwareMap.get(Servo.class, "arm");
+        clawleft = hardwareMap.get(Servo.class, "claw");
+        clawright = hardwareMap.get(Servo.class, "claw");
+        double forwardSpeed = -gamepad1.left_stick_y;
+        double sideSpeed = gamepad1.left_stick_x;
+        double backRight_sideSpeed = -sideSpeed;
+        double backLeft_sideSpeed = sideSpeed;
+        double frontRight_sideSpeed = sideSpeed;
+        double frontLeft_sideSpeed = -sideSpeed;
+        double backRight_forwardSpeed = forwardSpeed;
+        double backLeft_forwardSpeed = forwardSpeed;
+        double frontRight_forwardSpeed = -forwardSpeed;
+        double frontLeft_forwardSpeed = -forwardSpeed;
+        double turnSpeed = gamepad1.right_stick_x * 0.7;
+        double frontRight_turnSpeed = turnSpeed;
+        double frontLeft_turnSpeed = -turnSpeed;
+        double backLeft_turnSpeed = -turnSpeed;
+        double backRight_turnSpeed = turnSpeed;
+        double numberOfinputs = 0;
+        if (Math.abs(turnSpeed) > 0.02) {
+            numberOfinputs += 1;
+        }
+        if (Math.abs(forwardSpeed) > 0.02) {
+
+            numberOfinputs += 1;
+        }
+        if (Math.abs(sideSpeed) > 0.02) {
+            numberOfinputs += 1;
+        }
+        double frontRightspeed = -1 * (frontRight_forwardSpeed + frontRight_sideSpeed + frontRight_turnSpeed) / numberOfinputs;
+        double frontLeftspeed = -1 * (frontLeft_forwardSpeed + frontLeft_sideSpeed + frontLeft_turnSpeed) / numberOfinputs;
+        double backRightspeed = 1 * (backRight_forwardSpeed + backRight_sideSpeed + backRight_turnSpeed) / numberOfinputs;
+        double backLeftspeed = -1 * (backLeft_forwardSpeed + backLeft_sideSpeed + backLeft_turnSpeed) / numberOfinputs;
+
+        frontLeft.setPower(frontLeftspeed);
+        frontRight.setPower(frontRightspeed);
+        backLeft.setPower(backLeftspeed);
+        backRight.setPower(backRightspeed);
+        //boolean armPosition = -gamepad1.a;
+        boolean clawClosed = gamepad2.a;
+        boolean clawOpen = gamepad2.b;
+        if(clawClosed){
+            clawleft.setPosition(0);
+            clawright.setPosition(0);
+        }
+        if(clawOpen){
+            clawleft.setPosition(1);
+            clawright.setPosition(1);
+        }
+
+    }
+
+    /*
+     * Code to run ONCE after the driver hits STOP
+     */
+    @Override
+    public void stop() {
+    }
+
+}
+
