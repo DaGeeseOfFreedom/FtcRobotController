@@ -28,7 +28,8 @@ public class Grrahhrobotcode extends OpMode {
     public static DcMotor backLeft;
     public static DcMotor backRight;
 
-    //public static Servo arm;
+    public static Servo arm1;
+    public static Servo arm2;
     public static Servo clawleft;
     public static Servo clawright;
     public void init() {
@@ -39,7 +40,8 @@ public class Grrahhrobotcode extends OpMode {
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
-        //arm = hardwareMap.get(Servo.class, "arm");
+        arm1 = hardwareMap.get(Servo.class, "arm");
+        arm2 = hardwareMap.get(Servo.class, "arm");
         clawleft = hardwareMap.get(Servo.class, "claw");
         clawright = hardwareMap.get(Servo.class, "claw");
         double forwardSpeed = -gamepad1.left_stick_y;
@@ -77,7 +79,16 @@ public class Grrahhrobotcode extends OpMode {
         frontRight.setPower(frontRightspeed);
         backLeft.setPower(backLeftspeed);
         backRight.setPower(backRightspeed);
-        //boolean armPosition = -gamepad1.a;
+        boolean armPosition1 = gamepad2.right_bumper;
+        boolean armPosition2 = gamepad2.left_bumper;
+        if(armPosition1){
+            arm1.setPosition(0);
+            arm2.setPosition(0);
+        }
+        if(armPosition2){
+            arm1.setPosition(1);
+            arm2.setPosition(1);
+        }
         boolean clawClosed = gamepad2.a;
         boolean clawOpen = gamepad2.b;
         if(clawClosed){
