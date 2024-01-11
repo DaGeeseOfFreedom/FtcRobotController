@@ -31,24 +31,29 @@ public class Grrahhrobotcode extends OpMode {
     public static DcMotor backLeft;
     public static DcMotor backRight;
 
-    public static CRServo arm1;
-    public static CRServo arm2;
+    //    public static CRServo arm1;
+//    public static CRServo arm2;
+    public static Servo arm1;
+    public static Servo arm2;
     public static Servo clawleft;
 
     public static Servo clawright;
 
     public void init() {
-    }
-
-    public void loop() {
+        arm1 = hardwareMap.get(Servo.class, "arm1");
+        arm2 = hardwareMap.get(Servo.class, "arm2");
+        clawleft = hardwareMap.get(Servo.class, "claw1");
+        clawright = hardwareMap.get(Servo.class, "claw2");
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
-        arm1 = hardwareMap.get(CRServo.class, "arm1");
-        arm2 = hardwareMap.get(CRServo.class, "arm2");
-        clawleft = hardwareMap.get(Servo.class, "claw1");
-        clawright = hardwareMap.get(Servo.class, "claw2");
+    }
+
+    public void loop() {
+
+//        arm1 = hardwareMap.get(CRServo.class, "arm1");
+//        arm2 = hardwareMap.get(CRServo.class, "arm2");
         double forwardSpeed = -gamepad1.left_stick_y;
         double sideSpeed = gamepad1.left_stick_x;
         double backRight_sideSpeed = -sideSpeed;
@@ -75,49 +80,63 @@ public class Grrahhrobotcode extends OpMode {
         if (Math.abs(sideSpeed) > 0.02) {
             numberOfinputs += 0.5;
         }
-        double frontRightspeed =0;
+        double frontRightspeed = 0;
         double frontLeftspeed = 0;
-        double backRightspeed =0;
+        double backRightspeed = 0;
         double backLeftspeed = 0;
-        if(numberOfinputs>0){
-             frontRightspeed = -1 * (frontRight_forwardSpeed + frontRight_sideSpeed + frontRight_turnSpeed) / numberOfinputs;
-             frontLeftspeed = -1 * (frontLeft_forwardSpeed + frontLeft_sideSpeed + frontLeft_turnSpeed) / numberOfinputs;
-             backRightspeed = 1 * (backRight_forwardSpeed + backRight_sideSpeed + backRight_turnSpeed) / numberOfinputs;
-             backLeftspeed = -1 * (backLeft_forwardSpeed + backLeft_sideSpeed + backLeft_turnSpeed) / numberOfinputs;
+        if (numberOfinputs > 0) {
+            frontRightspeed = -1 * (frontRight_forwardSpeed + frontRight_sideSpeed + frontRight_turnSpeed) / numberOfinputs;
+            frontLeftspeed = -1 * (frontLeft_forwardSpeed + frontLeft_sideSpeed + frontLeft_turnSpeed) / numberOfinputs;
+            backRightspeed = 1 * (backRight_forwardSpeed + backRight_sideSpeed + backRight_turnSpeed) / numberOfinputs;
+            backLeftspeed = -1 * (backLeft_forwardSpeed + backLeft_sideSpeed + backLeft_turnSpeed) / numberOfinputs;
         }
-        telemetry.addData("forwardSpeed",forwardSpeed);
-        telemetry.addData("sideSpeed",sideSpeed);
+        telemetry.addData("forwardSpeed", forwardSpeed);
+        telemetry.addData("sideSpeed", sideSpeed);
         frontLeft.setPower(frontLeftspeed);
         frontRight.setPower(frontRightspeed);
         backLeft.setPower(backLeftspeed);
         backRight.setPower(backRightspeed);
-        boolean armPosition1 = gamepad2.a;
-        boolean armPosition2 = gamepad2.b;
+        boolean armPosition1 = gamepad1.y;
+        boolean armPosition2 = gamepad1.a;
         if (armPosition1) {
-            arm1.setPower(-.5);
-            arm2.setPower(.5);
+//            arm1.setPower(-.5)
+//            arm2.setPower(.5);
+            double armPositionUp = 0.13;
+            arm1.setPosition(armPositionUp);
+            arm2.setPosition(1 - armPositionUp);
         } else if (armPosition2) {
-            arm1.setPower(0.5);
-            arm2.setPower(-0.5);
+//            arm1.setPower(0.5);
+//            arm2.setPower(-0.5);
+            double armPositionDown = 0.46;
+            arm1.setPosition(armPositionDown);
+            arm2.setPosition(1 - armPositionDown);
         }
-        if(armPosition1==false && armPosition2==false){
-            arm1.setPower(-.075);
-            arm2.setPower(.075);
-        }
+//        if(!armPosition1 && !armPosition2){
+//            arm1.setPower(-.035);
+//            arm2.setPower(.035);
+//        }
         //if (armPosition1) {
-            //arm1.setPosition(0);
+        //arm1.setPosition(0);
         //} else if (armPosition2) {
-            //arm1.setPosition(1);
+        //arm1.setPosition(1);
         //}
-        boolean clawClosed = gamepad2.x;
-        boolean clawOpen = gamepad2.y;
+        boolean clawClosed = gamepad1.x;
+//        clawleft.setPosition(0.1);
+        boolean clawOpen = gamepad1.b;
+        boolean clawDrop = gamepad1.right_bumper;
         if (clawClosed) {
-            clawleft.setPosition(0.5);
-            clawright.setPosition(0.9);
+            clawleft.setPosition(0.1);
+            clawright.setPosition(0.8);
         }
         if (clawOpen) {
-            clawleft.setPosition(0.75);
+            clawleft.setPosition(0.1);
+//            clawleft.setPosition(0.75);
             clawright.setPosition(0.4);
+        }
+        if (clawDrop) {
+            clawleft.setPosition(0);
+            clawright.setPosition(0);
+
         }
 
     }

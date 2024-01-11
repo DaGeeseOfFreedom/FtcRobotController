@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -22,13 +23,20 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "GrrahhAUTO", group = "Robot")
+@Autonomous(name = "GrrahhAUTO", group = "Robot", preselectTeleOp="Grrahh")
 
 public class GrrahhAUTOrobotcode extends LinearOpMode {
     private DcMotor frontLeft = null;
+
     private DcMotor frontRight = null;
     private DcMotor backLeft = null;
     private DcMotor backRight = null;
+
+    private Servo arm1;
+    private Servo arm2;
+    private Servo clawleft;
+
+    public static Servo clawright;
 
     private ElapsedTime runtime = new ElapsedTime();
     public void driveStraight(double speed,float distance){
@@ -36,7 +44,7 @@ public class GrrahhAUTOrobotcode extends LinearOpMode {
         frontLeft.setPower(speed);
         backLeft.setPower(speed);
         backRight.setPower(speed);
-        sleep(Math.round(distance/10.25));
+        sleep(Math.round((distance*1000)/10.25));
         // 10.25 - 41in/4sec - 10.25in/1sec
         frontRight.setPower(0);
         frontLeft.setPower(0);
@@ -44,17 +52,20 @@ public class GrrahhAUTOrobotcode extends LinearOpMode {
         backRight.setPower(0);
 
     }
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "backLeft");
         backLeft = hardwareMap.get(DcMotor.class, "frontRight");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
+        arm1 = hardwareMap.get(Servo.class, "arm1");
+        arm2 = hardwareMap.get(Servo.class, "arm2");
+        clawleft = hardwareMap.get(Servo.class, "claw1");
+        clawright = hardwareMap.get(Servo.class, "claw2");
 
-        frontRight.setDirection(DcMotor.Direction.FORWARD);
-        backRight.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.FORWARD);
-        frontLeft.setDirection(DcMotor.Direction.FORWARD);
-
+        frontRight.setDirection(DcMotor.Direction.REVERSE);
+        backRight.setDirection(DcMotor.Direction.FORWARD);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
         frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -62,8 +73,18 @@ public class GrrahhAUTOrobotcode extends LinearOpMode {
 
         waitForStart();
         if (opModeIsActive()) {
+            clawleft.setPosition(0.1);
+            clawright.setPosition(0.8);
+            double armPositionUp = 0.13;
+            arm1.setPosition(armPositionUp);
+            arm2.setPosition(1 - armPositionUp);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                telemetry.addData("%s", e.toString());
 
-            driveStraight( 0.5,57);
+            }
+            driveStraight( -0.5,48);
         }
 
     }
