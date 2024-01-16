@@ -25,7 +25,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name = "GrrahhAUTO", group = "Robot", preselectTeleOp="Grrahh")
 
-public class GrrahhAUTOrobotcode extends LinearOpMode {
+public class
+GrrahhAUTOrobotcode extends LinearOpMode {
     private DcMotor frontLeft = null;
 
     private DcMotor frontRight = null;
@@ -76,6 +77,7 @@ public class GrrahhAUTOrobotcode extends LinearOpMode {
             clawleft.setPosition(0.1);
             clawright.setPosition(0.8);
             double armPositionUp = 0.13;
+            //0.13 was armPositionUp originally
             arm1.setPosition(armPositionUp);
             arm2.setPosition(1 - armPositionUp);
             try {
@@ -84,7 +86,8 @@ public class GrrahhAUTOrobotcode extends LinearOpMode {
                 telemetry.addData("%s", e.toString());
 
             }
-            driveStraight( -0.5,48);
+            driveStraight( -0.5,40);
+            //og is 48 not 46
         }
 
     }
