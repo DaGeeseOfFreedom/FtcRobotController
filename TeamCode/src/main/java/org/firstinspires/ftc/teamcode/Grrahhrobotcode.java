@@ -138,6 +138,13 @@ public class Grrahhrobotcode extends OpMode {
             clawright.setPosition(0);
 
         }
+        boolean dronePosition = gamepad1.left_bumper;
+        if (dronePosition){
+            drone.setPosition(1);
+        }
+        else{
+            drone.setPosition(0);
+        }
 
     }
 }
