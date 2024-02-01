@@ -31,6 +31,7 @@ public class Grrahhrobotcode extends OpMode {
     public static DcMotor backLeft;
     public static DcMotor backRight;
 
+
     //    public static CRServo arm1;
 //    public static CRServo arm2;
     public static Servo arm1;
@@ -38,6 +39,7 @@ public class Grrahhrobotcode extends OpMode {
     public static Servo clawleft;
 
     public static Servo clawright;
+    public static Servo drone;
 
     public void init() {
         arm1 = hardwareMap.get(Servo.class, "arm1");
@@ -48,6 +50,7 @@ public class Grrahhrobotcode extends OpMode {
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
+        drone = hardwareMap.get(Servo.class, "drone");
     }
 
     public void loop() {
