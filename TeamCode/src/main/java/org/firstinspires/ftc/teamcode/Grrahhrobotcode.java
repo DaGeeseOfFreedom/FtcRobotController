@@ -30,33 +30,17 @@ public class Grrahhrobotcode extends OpMode {
     public static DcMotor frontRight;
     public static DcMotor backLeft;
     public static DcMotor backRight;
-
-
-    //    public static CRServo arm1;
-//    public static CRServo arm2;
-    public static Servo arm1;
-    public static Servo arm2;
-    public static Servo clawleft;
-
-    public static Servo clawright;
-    public static Servo drone;
+    public static Servo intake;
 
     public void init() {
-        arm1 = hardwareMap.get(Servo.class, "arm1");
-        arm2 = hardwareMap.get(Servo.class, "arm2");
-        clawleft = hardwareMap.get(Servo.class, "claw1");
-        clawright = hardwareMap.get(Servo.class, "claw2");
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
-        drone = hardwareMap.get(Servo.class, "drone");
+        intake = hardwareMap.get(Servo.class, "intake");
     }
 
     public void loop() {
-
-//        arm1 = hardwareMap.get(CRServo.class, "arm1");
-//        arm2 = hardwareMap.get(CRServo.class, "arm2");
         double forwardSpeed = -gamepad1.left_stick_y;
         double sideSpeed = gamepad1.left_stick_x;
         double backRight_sideSpeed = -sideSpeed;
@@ -99,55 +83,16 @@ public class Grrahhrobotcode extends OpMode {
         frontRight.setPower(frontRightspeed);
         backLeft.setPower(backLeftspeed);
         backRight.setPower(backRightspeed);
-        boolean armPosition1 = gamepad1.y;
-        boolean armPosition2 = gamepad1.a;
-        if (armPosition1) {
-//            arm1.setPower(-.5)
-//            arm2.setPower(.5);
-            double armPositionUp = 0.13;
-            arm1.setPosition(armPositionUp);
-            arm2.setPosition(1 - armPositionUp);
-        } else if (armPosition2) {
-//            arm1.setPower(0.5);
-//            arm2.setPower(-0.5);
-            double armPositionDown = 0.46;
-            arm1.setPosition(armPositionDown);
-            arm2.setPosition(1 - armPositionDown);
-        }
-//        if(!armPosition1 && !armPosition2){
-//            arm1.setPower(-.035);
-//            arm2.setPower(.035);
-//        }
-        //if (armPosition1) {
-        //arm1.setPosition(0);
-        //} else if (armPosition2) {
-        //arm1.setPosition(1);
-        //}
-        boolean clawClosed = gamepad1.x;
-//        clawleft.setPosition(0.1);
-        boolean clawOpen = gamepad1.b;
-        boolean clawDrop = gamepad1.right_bumper;
-        if (clawClosed) {
-            clawleft.setPosition(0.1);
-            clawright.setPosition(0.8);
-        }
-        if (clawOpen) {
-            clawleft.setPosition(0.1);
-//            clawleft.setPosition(0.75);
-            clawright.setPosition(0.4);
-        }
-        if (clawDrop) {
-            clawleft.setPosition(0);
-            clawright.setPosition(0);
 
+        boolean intakeIn = gamepad1.x;
+        boolean intakeOut = gamepad1.b;
+        if (intakeIn) {
+            intake.setPosition(0.1);
         }
-        boolean dronePosition = gamepad1.left_bumper;
-        if (dronePosition){
-            drone.setPosition(1);
+        else if (intakeOut) {
+            intake.setPosition(0.1);
         }
         else{
-            drone.setPosition(0);
+            intake.setPosition(0);
         }
-
     }
-}
