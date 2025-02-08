@@ -31,6 +31,7 @@ public class Grrahhrobotcode extends OpMode {
     public static DcMotor backLeft;
     public static DcMotor backRight;
     public static Servo intake;
+    public static Servo arm;
 
     public void init() {
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
@@ -38,6 +39,7 @@ public class Grrahhrobotcode extends OpMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         intake = hardwareMap.get(Servo.class, "intake");
+        arm = hardwareMap.get(Servo.class, "arm");
     }
 
     public void loop() {
@@ -51,7 +53,7 @@ public class Grrahhrobotcode extends OpMode {
         double backLeft_forwardSpeed = -forwardSpeed;
         double frontRight_forwardSpeed = -forwardSpeed;
         double frontLeft_forwardSpeed = -forwardSpeed;
-        double turnSpeed = gamepad1.right_stick_x * 0.8;
+        double turnSpeed = gamepad1.right_stick_x;
         double frontRight_turnSpeed = turnSpeed;
         double frontLeft_turnSpeed = -turnSpeed;
         double backLeft_turnSpeed = -turnSpeed;
@@ -73,26 +75,34 @@ public class Grrahhrobotcode extends OpMode {
         double backLeftspeed = 0;
         if (numberOfinputs > 0) {
             frontRightspeed = -1 * (frontRight_forwardSpeed + frontRight_sideSpeed + frontRight_turnSpeed) / numberOfinputs;
-            frontLeftspeed = -1 * (frontLeft_forwardSpeed + frontLeft_sideSpeed + frontLeft_turnSpeed) / numberOfinputs;
+            frontLeftspeed = -0.7 * (frontLeft_forwardSpeed + frontLeft_sideSpeed + frontLeft_turnSpeed) / numberOfinputs;
             backRightspeed = 1 * (backRight_forwardSpeed + backRight_sideSpeed + backRight_turnSpeed) / numberOfinputs;
             backLeftspeed = -1 * (backLeft_forwardSpeed + backLeft_sideSpeed + backLeft_turnSpeed) / numberOfinputs;
         }
         telemetry.addData("forwardSpeed", forwardSpeed);
         telemetry.addData("sideSpeed", sideSpeed);
         frontLeft.setPower(frontLeftspeed);
-        .setPower(backLeftspeed);
-        bacfrontRight.setPower(frontRightspeed);
-        backLeftkRight.setPower(backRightspeed);
+        frontRight.setPower(frontRightspeed);
+        backLeft.setPower(backLeftspeed);
+        backRight.setPower(backRightspeed);
 
         boolean intakeIn = gamepad1.x;
         boolean intakeOut = gamepad1.b;
+        boolean armUp = gamepad1.y;
+        boolean armDown = gamepad1.a;
         if (intakeIn) {
-            intake.setPosition(0.1);
-        }
-        else if (intakeOut) {
-            intake.setPosition(0.1);
-        }
-        else{
+            intake.setPosition(1);
+        } else if (intakeOut) {
             intake.setPosition(0);
+        } else {
+            intake.setPosition(1);
+        }
+        if (armUp) {
+            arm.setPosition(0.7);
+        } else if (armDown) {
+           arm.setPosition(0);
         }
     }
+}
+
+
