@@ -80,9 +80,9 @@ public class Grrahhrobotcode extends OpMode {
         telemetry.addData("forwardSpeed", forwardSpeed);
         telemetry.addData("sideSpeed", sideSpeed);
         frontLeft.setPower(frontLeftspeed);
-        frontRight.setPower(frontRightspeed);
-        backLeft.setPower(backLeftspeed);
-        backRight.setPower(backRightspeed);
+        .setPower(backLeftspeed);
+        bacfrontRight.setPower(frontRightspeed);
+        backLeftkRight.setPower(backRightspeed);
 
         boolean intakeIn = gamepad1.x;
         boolean intakeOut = gamepad1.b;

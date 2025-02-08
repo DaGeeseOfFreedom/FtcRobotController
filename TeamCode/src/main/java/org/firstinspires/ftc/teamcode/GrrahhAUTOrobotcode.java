@@ -33,12 +33,8 @@ GrrahhAUTOrobotcode extends LinearOpMode {
     private DcMotor backLeft = null;
     private DcMotor backRight = null;
 
-    private Servo arm1;
-    private Servo arm2;
-    private Servo clawleft;
-
-    public static Servo clawright;
-
+    private Servo arm;
+    private Servo intake;
     private ElapsedTime runtime = new ElapsedTime();
     public void driveStraight(double speed,float distance){
         frontRight.setPower(speed);
@@ -53,15 +49,26 @@ GrrahhAUTOrobotcode extends LinearOpMode {
         backRight.setPower(0);
 
     }
+    public void driveBack(double speed,float distance){
+        frontRight.setPower(-speed);
+        frontLeft.setPower(-speed);
+        backLeft.setPower(-speed);
+        backRight.setPower(-speed);
+        sleep(Math.round((distance*1000)/10.25));
+        // 10.25 - 41in/4sec - 10.25in/1sec
+        frontRight.setPower(0);
+        frontLeft.setPower(0);
+        backLeft.setPower(0);
+        backRight.setPower(0);
+
+    }
     public void runOpMode() throws InterruptedException {
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "backLeft");
         backLeft = hardwareMap.get(DcMotor.class, "frontRight");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
-        arm1 = hardwareMap.get(Servo.class, "arm1");
-        arm2 = hardwareMap.get(Servo.class, "arm2");
-        clawleft = hardwareMap.get(Servo.class, "claw1");
-        clawright = hardwareMap.get(Servo.class, "claw2");
+        intake = hardwareMap.get(Servo.class, "intake");
+        arm = hardwareMap.get(Servo.class, "arm");
 
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.FORWARD);
@@ -74,20 +81,19 @@ GrrahhAUTOrobotcode extends LinearOpMode {
 
         waitForStart();
         if (opModeIsActive()) {
-            clawleft.setPosition(0.1);
-            clawright.setPosition(0.8);
-            double armPositionUp = 0.13;
+            intake.setPosition(0);
+            //double armPositionUp = 0.13;
             //0.13 was armPositionUp originally
-            arm1.setPosition(armPositionUp);
-            arm2.setPosition(1 - armPositionUp);
+            //arm.setPosition(armPositionUp);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 telemetry.addData("%s", e.toString());
 
             }
-            driveStraight( -0.5,40);
+            driveStraight( -0.5,25);
             //og is 48 not 46
+            driveBack(-0.5,3);
         }
 
     }
